@@ -1,0 +1,134 @@
+************************************
+****		ECE5362		****
+****	   Machine Problem 3	****
+****	 Anirudhhan Raghuraman	****
+************************************
+*** start fetch cycle ***
+ st=0 rt='[pc]-> mar'           imar rac=1 rn=3
+ st=1 rt='[[mar]]-> mdr'        read
+ st=2 rt='[mdr] -> ir'          omdr iir
+ st=3 rt='[pc]+1 -> q'          rac=1 rn=3 ib p1 oadder
+ st=4 rt='[q] -> pc'            oq wac=1 wn=3
+	cond='ir158' value=0 nst=10
+	cond='ir1512' value=4 nst=50 
+	cond='ir118' value=4 nst=20
+        nst=10
+
+*** If any instructions are present except HALT or NEG, a halt will occur.
+*** HALT execution cycle ****
+ st=10 halt
+
+*** NEG REGISTER execution cycle, using t2 save the content ***
+ st=20 rt='[reg]->t2'		rac=3 it2
+	cond='ir64'		value=0 nst=21
+	cond='ir64'		value=1 nst=23
+	cond='ir64'		value=2 nst=23
+	cond='ir64'		value=3 nst=30
+*** reg neg
+ st=21 rt='0-[t2] -> q'         ot2 ib comp p1 oadder newc newv
+ st=22 rt='[q] -> reg'          oq wac=3 newz newn
+       nst=0
+*** indirect neg
+ st=23 rt='[t2]->mar'		ot2 imar
+ st=24 rt='[[mar]]->mdr'	read
+ st=25 rt='0-[mdr]-> q'		omdr ib comp p1 oadder newc newv
+ st=26 rt='[q] -> mdr'		oq imdr newz newn
+ st=27 rt='[mdr] -> mar'	write
+	cond='ir64' value=1 nst=0
+	cond='ir64' value=2 nst=28
+	cond='ir64' value=3 nst=33
+*** automincrement
+ st=28 rt='[R]+1 -> q'		rac=3 ib p1 oadder newc newv
+ st=29 rt='[q]-> [R]'		oq wac=3 newz newn
+	nst=0
+*** automdecrement
+ st=30 rt='[t2]-> t1'		ot2 it1
+ st=31 rt='[t2]-1-> q'		ib=0 oa comp oadder newc newv newz newn
+ st=32 rt='[q]-> t2'		oq it2
+	nst=23
+ st=33 rt='[t2] -> R'		ot2 wac=3
+	nst=0
+
+*** EXG AC, X***********************************************************
+ st=50 rt='[R]->t3'		rac=2 it3
+	cond='ir108' value=0 nst=51
+	cond='ir108' value=1 nst=54
+	cond='ir108' value=2 nst=60
+	cond='ir108' value=3 nst=69
+	nst= 51
+ st=51 rt='[R]->t2'		rac=3 it2 
+	cond='ir64' value=0 nst=52
+	cond='ir64' value=1 nst=78
+	cond='ir64' value=2 nst=83
+	cond='ir64' value=3 nst=91
+	nst=0
+	
+***regisster mode***	
+ st=52 rt='[t3]->R'		wac=3 ot3
+ st=53 rt='[t2]->R'		wac=2 ot2
+	nst=0
+*** indirect mode***
+ st=54 rt='[R]->t2'		rac=3 it2  	
+ st=55 rt='[t3]->mar'		ot3 imar
+ st=56 rt='[[mar]]->mdr'	read
+ st=57 rt='[mdr]-> R'		omdr wac=3
+ st=58 rt='[t2]-> mdr'		ot2 imdr
+ st=59 rt='[mdr]->mar'		write
+	nst=0
+
+***  autoincrement **********************
+ st=60 rt='[R]->t2'		rac=3 it2  
+ st=61 rt='[t3]->mar'		ot3 imar
+ st=62 rt='[[mar]]->mdr'	read
+ st=63 rt='[mdr]-> R'		omdr wac=3
+ st=64 rt='[t2]-> mdr'		ot2 imdr
+ st=65 rt='[mdr]->mar'		write
+ st=66 rt='[t3]-> t1'		ot3 it1
+ st=67 rt='[t1]+1->q'		oa p1 oadder
+ st=68 rt='[q]-> R'		oq wac=2
+	nst=0
+
+*** autodecrement *****************
+ st=69 rt='[R]->t2'		rac=3 it2
+ st=70 rt='[t3]-> t1'		ot3 it1
+ st=71 rt='[t1]-1->q'		oa ib=0 oa comp oadder newc newv newz newn
+ st=72 rt='[q]->mar'		oq imar
+ st=73 rt='[[mar]]->mdr'	read
+ st=74 rt='[mdr]-> R'		omdr wac=3
+ st=75 rt='[t2]-> mdr'		ot2 imdr
+ st=76 rt='[mdr]->mar'		write
+ st=77 rt='[q]-> R'		oq wac=2
+	nst=0
+
+*** indirect mode***	
+ st=78 rt='[t2]->mar'		ot2 imar
+ st=79 rt='[[mar]]->mdr'	read
+ st=80 rt='[mdr]-> R'		omdr wac=2
+ st=81 rt='[t3]-> mdr'		ot3 imdr
+ st=82 rt='[mdr]->mar'		write
+	nst=0 
+
+***  autoincrement **********************
+ st=83 rt='[t2]->mar'		ot2 imar
+ st=84 rt='[[mar]]->mdr'	read
+ st=85 rt='[mdr]-> R'		omdr wac=2
+ st=86 rt='[t3]-> mdr'		ot3 imdr
+ st=87 rt='[mdr]->mar'		write
+ st=88 rt='[t2]-> t1'		ot2 it1
+ st=89 rt='[t1]+1->q'		oa p1 oadder
+ st=90 rt='[q]-> R'		oq wac=3
+	nst=0
+
+*** autodecrement *****************
+ st=91 rt='[t2]-> t1'		ot2 it1
+ st=92 rt='[t1]-1->q'		oa ib=0 oa comp oadder newc newv newz newn
+ st=93 rt='[q]->mar'		oq imar
+ st=94 rt='[[mar]]->mdr'	read
+ st=95 rt='[mdr]-> R'		omdr wac=2
+ st=96 rt='[t3]-> mdr'		ot3 imdr
+ st=97 rt='[mdr]->mar'		write
+ st=98 rt='[q]-> R'		oq wac=3
+	nst=0
+
+
+
