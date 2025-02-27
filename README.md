@@ -60,12 +60,3 @@ The OSIAC (One Step Intermediate Automatic Computer) simulator provides a platfo
 
 3.  The simulator will prompt you to enter assembly language instructions.
 
-### Example Program
-
-```assembly
-LOAD 10
-ADD 11
-STORE 12
-HALT
-10
-20
