@@ -30,24 +30,12 @@ The OSIAC (One Step Intermediate Automatic Computer) simulator provides a platfo
     cd OSIAC-Computer-Simulator
     ```
 
-2.  Create a build directory:
+2.  Enter the Directory
 
     ```bash
-    mkdir build
-    cd build
+    cd OSIAC-Computer-Simulator/MachineProblem1
     ```
 
-3.  Run CMake:
-
-    ```bash
-    cmake ..
-    ```
-
-4.  Compile the simulator:
-
-    ```bash
-    make
-    ```
 
 ### Running the Simulator
 
@@ -55,8 +43,8 @@ The OSIAC (One Step Intermediate Automatic Computer) simulator provides a platfo
 2.  Run the simulator:
 
     ```bash
-    ./osiac_simulator
+    ./dosim mp1-specs.dat test1
     ```
+    Change the directory and file names accordingly
 
-3.  The simulator will prompt you to enter assembly language instructions.
-
+3. You should have a summary and a details file created in the same directory. That will be the required outputs for us.
